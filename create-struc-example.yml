@@ -1,0 +1,91 @@
+name: Create Folder Structure
+
+on: 
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  create-structure:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3.2.0
+
+    - name: Create folder structure
+      run: |
+        mkdir -p src/models
+        mkdir -p src/utils
+        mkdir -p src/data
+        mkdir -p src/training
+        mkdir -p tests
+        mkdir -p notebooks
+        mkdir -p config
+        mkdir -p data/raw
+        mkdir -p data/processed
+        mkdir -p docs
+        mkdir -p scripts
+
+        [ -e src/models/__init__.py ] || touch src/models/__init__.py
+        [ -e src/models/federated_transformer.py ] || touch src/models/federated_transformer.py
+        [ -e src/models/gear_transformer.py ] || touch src/models/gear_transformer.py
+        [ -e src/models/feedback_transformer.py ] || touch src/models/feedback_transformer.py
+        [ -e src/models/custom_attention.py ] || touch src/models/custom_attention.py
+
+        [ -e src/utils/__init__.py ] || touch src/utils/__init__.py
+        [ -e src/utils/hypergraph.py ] || touch src/utils/hypergraph.py
+        [ -e src/utils/serialization.py ] || touch src/utils/serialization.py
+        [ -e src/utils/visualization.py ] || touch src/utils/visualization.py
+
+        [ -e src/data/__init__.py ] || touch src/data/__init__.py
+        [ -e src/data/dataset.py ] || touch src/data/dataset.py
+        [ -e src/data/preprocess.py ] || touch src/data/preprocess.py
+
+        [ -e src/training/__init__.py ] || touch src/training/__init__.py
+        [ -e src/training/trainer.py ] || touch src/training/trainer.py
+        [ -e src/training/metrics.py ] || touch src/training/metrics.py
+        [ -e src/training/optimizer.py ] || touch src/training/optimizer.py
+        [ -e src/training/config.py ] || touch src/training/config.py
+
+        [ -e tests/__init__.py ] || touch tests/__init__.py
+        [ -e tests/test_models.py ] || touch tests/test_models.py
+        [ -e tests/test_utils.py ] || touch tests/test_utils.py
+        [ -e tests/test_training.py ] || touch tests/test_training.py
+
+        [ -e notebooks/exploratory_analysis.ipynb ] || touch notebooks/exploratory_analysis.ipynb
+        [ -e notebooks/training_demo.ipynb ] || touch notebooks/training_demo.ipynb
+        [ -e notebooks/hypergraph_visualization.ipynb ] || touch notebooks/hypergraph_visualization.ipynb
+
+        [ -e config/model_config.json ] || touch config/model_config.json
+        [ -e config/training_config.json ] || touch config/training_config.json
+        [ -e config/hypergraph_config.json ] || touch config/hypergraph_config.json
+
+        [ -e data/README.md ] || touch data/README.md
+        [ -e data/example_data.csv ] || touch data/example_data.csv
+
+        [ -e docs/architecture.md ] || touch docs/architecture.md
+        [ -e docs/hypergraph_representation.md ] || touch docs/hypergraph_representation.md
+        [ -e docs/training_pipeline.md ] || touch docs/training_pipeline.md
+        [ -e docs/API_REFERENCE.md ] || touch docs/API_REFERENCE.md
+
+        [ -e scripts/train.py ] || touch scripts/train.py
+        [ -e scripts/evaluate.py ] || touch scripts/evaluate.py
+        [ -e scripts/infer.py ] || touch scripts/infer.py
+        [ -e scripts/preprocess_data.py ] || touch scripts/preprocess_data.py
+
+        [ -e environment.yml ] || touch environment.yml
+        [ -e requirements.txt ] || touch requirements.txt
+        [ -e setup.py ] || touch setup.py
+        [ -e README.md ] || touch README.md
+        [ -e LICENSE ] || touch LICENSE
+        [ -e .gitignore ] || touch .gitignore
+
+    - name: Commit changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add .
+        git commit -m "Create initial folder structure"
+        git push
